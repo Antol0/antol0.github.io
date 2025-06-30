@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikacja do Nauki Zarządzania</title>
+    <style>
+        /* Proste style CSS, aby aplikacja ładnie wyglądała */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            max-width: 700px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2.2em;
+        }
+
+        #sentence {
+            font-size: 1.4em;
+            margin-bottom: 25px;
+            line-height: 1.6;
+            min-height: 50px; /* Aby tekst nie skakał */
+        }
+
+        .blank-space {
+            display: inline-block;
+            width: 150px; /* Długość podkreślenia */
+            border-bottom: 2px solid #3498db;
+            text-align: center;
+        }
+
+        #answerInput {
+            width: calc(100% - 20px);
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1.1em;
+            box-sizing: border-box;
+            transition: box-shadow 0.4s ease-in-out, border-color 0.4s ease-in-out; /* Zwiększona płynność przejścia */
+        }
+
+        /* Udoskonalona klasa CSS dla zielonej poświaty */
+        .input-correct-glow {
+            border-color: #27ae60; /* Wyraźniejsza zielona ramka */
+            box-shadow: 0 0 25px rgba(39, 174, 96, 0.8); /* Intensywniejsza zielona poświata */
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px; /* Odstęp między przyciskami */
+            flex-wrap: wrap; /* Aby przyciski przechodziły do nowej linii na małych ekranach */
+        }
+
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            min-width: 150px;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        #feedback {
+            margin-top: 25px;
+            font-size: 1.2em;
+            padding: 10px;
+            border-radius: 6px;
+            min-height: 40px; /* Aby tekst nie skakał */
+        }
+
+        .feedback-correct {
+            background-color: #e6ffe6;
+            color: #27ae60;
+            border: 1px solid #27ae60;
+        }
+
+        .feedback-incorrect {
+            background-color: #ffe6e6;
+            color: #e74c3c;
+            border: 1px solid #e74c3c;
+        }
+
+        .results {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-top: 30px;
+        }
+
+        #incorrectAnswersSummary {
+            margin-top: 30px;
+            text-align: left;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+
+        #incorrectAnswersSummary h2 {
+            color: #e74c3c;
+            font-size: 1.6em;
+            margin-bottom: 15px;
+        }
+
+        #incorrectAnswersSummary ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        #incorrectAnswersSummary li {
+            background-color: #fffafa;
+            border: 1px solid #ffcccc;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            font-size: 1.1em;
+            line-height: 1.5;
+        }
+
+        #incorrectAnswersSummary .original-sentence {
+            font-weight: bold;
+            color: #333;
+        }
+
+        #incorrectAnswersSummary .your-answer {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        #incorrectAnswersSummary .correct-answer {
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Uzupełnij Brakujące Słowo</h1>
+        <p id="questionNumber" style="font-size: 0.9em; color: #777; margin-bottom: 15px;"></p>
+        <p id="sentence"></p>
+        <input type="text" id="answerInput" placeholder="Wpisz brakujące słowo" autocomplete="off">
+
+        <div class="button-group">
+            <button id="checkButton">Sprawdź</button>
+            <button id="hintButton">Podpowiedź</button>
+            <button id="endTestButton">Zakończ Test</button>
+            <button id="nextButton" class="hidden">Następne Pytanie</button>
+            <button id="restartButton" class="hidden">Zacznij od Nowa</button>
+        </div>
+
+        <p id="feedback" class="hidden"></p>
+        <p id="finalScore" class="hidden results"></p>
+
+        <div id="incorrectAnswersSummary" class="hidden">
+            <h2>Pytania z błędnymi odpowiedziami:</h2>
+            <ul></ul>
+        </div>
+    </div>
+
+    <script>
+        // --- Baza pytań ---
+        // WAŻNE: Tutaj możesz edytować swoje pytania!
+        // Użyj "___" (trzy podkreślenia) w miejscu, gdzie ma być brakujące słowo.
+        // Pamiętaj o przecinku po każdym pytaniu (oprócz ostatniego)!
+        const questions = [
+            {
+                "sentence_template": "Wysoki poziom dbałości o personel jest w modelu Likerta jest charakterystyczny dla ___ stylu kierowania.",
+                "correct_answer": "partycypacyjnego",
+                "hint": "Model Likerta, dotyczy partycypacji pracowników."
+            },
+            {
+                "sentence_template": "Każdą sytuację zgodnie z modelem Fiedlera można opisać za pomocą trzech wymiarów: pozycji władczej kierownika, struktury zadania, stosunków pomiędzy podwładnym a ___.",
+                "correct_answer": "przełożonym",
+                "hint": "Fiedler skupiał się na relacjach w zespole."
+            },
+            {
+                "sentence_template": "Decyzje podejmuje się wolniej stosując styl ___ a nie autokratyczny.",
+                "correct_answer": "demokratyczny",
+                "hint": "Przeciwieństwo autokratycznego stylu zarządzania."
+            },
+            {
+                "sentence_template": "Decyzje podejmuje się szybciej stosując styl ___ a nie demokratyczny.",
+                "correct_answer": "autokratyczne",
+                "hint": "Przeciwieństwo demokratycznego stylu zarządzania."
+            },
+            {
+                "sentence_template": "Proces tworzenia organizacji to ___ znaczenie organizacji.",
+                "correct_answer": "czynnościowe",
+                "hint": "Dotyczy procesu, a nie cech czy układu."
+            },
+            {
+                "sentence_template": "W modelu organizacji według Leavita wyróżniamy: cele i zadania, ludzi, strukturę i ___.",
+                "correct_answer": "technologię",
+                "hint": "Czwarty element modelu Leavita."
+            },
+            {
+                "sentence_template": "Zgodnie z modelem organizacji 7-S Mc Kinsey'a sukces organizacji jest silnie determinowany ___ - elementami zarządzania.",
+                "correct_answer": "miękkimi",
+                "hint": "McKinsey'a 7-S, co oznacza 'miękkie' elementy?"
+            },
+            {
+                "sentence_template": "Sytuacja pojawiająca się wtedy, kiedy okoliczności pozwalają na osiągnięcie wyników lepszych od zaplanowanych to w procesie podejmowania decyzji mamy do czynienia z ___.",
+                "correct_answer": "okazją",
+                "hint": "Coś pozytywnego, co można wykorzystać."
+            },
+            {
+                "sentence_template": "Mintzberg dokonał podziału decyzji na: _______, _______ i ___.",
+                "correct_answer": "przedsiębiorcze adaptacyjne planistyczne",
+                "hint": "Rodzaje decyzji według Mintzberga."
+            },
+            {
+                "sentence_template": "Zgodnie z paradygmatem ___ Organizacja jest systemem społecznym zdolnym do osiągania celów.",
+                "correct_answer": "behawioralnym",
+                "hint": "Paradygmat, który skupia się na zachowaniu."
+            },
+            {
+                "sentence_template": "Wyróżniamy następujące wytyczne alternatywne sprawnego działania: _______ - uniwersalizacja, aktywizacja działania - minimalizacja interwencji, _______ - antycypacja; potencjalizacja - pełne wykorzystanie zasobów; ___ - dywersyfikacja działania.",
+                "correct_answer": "specjalizacja kunktacja koncentracja sił",
+                "hint": "Wytyczne sprawnego działania, przeciwieństwo dywersyfikacji."
+            },
+            {
+                "sentence_template": "Do cech prawidłowego systemu kontroli zaliczamy: celowość, sprawność i szybkość, ___, ___, zrozumiałość.",
+                "correct_answer": "obiektywność elastyczność",
+                "hint": "Kontrola powinna być sprawiedliwa i bezstronna."
+            },
+            {
+                "sentence_template": "Kontrola pełni funkcję ___, profilaktyczną, korygującą / ochronną, ___, instruktażową, pobudzającą.",
+                "correct_answer": "informacyjną kreatywną",
+                "hint": "Jedna z podstawowych funkcji kontroli, dostarczanie danych."
+            },
+            {
+                "sentence_template": "Jeśli plan jest oparty na rzetelnej wiedzy to oznacza to, że jest on ___.",
+                "correct_answer": "racjonalny",
+                "hint": "Cechy dobrze przemyślanego planu."
+            },
+            {
+                "sentence_template": "Wyróżniamy więzi organizacyjne ___, funkcjonalne, techniczne, informacyjne.",
+                "correct_answer": "SŁUŻBOWE",
+                "hint": "Rodzaje więzi organizacyjnych, te najczęściej kojarzone z hierarchią."
+            },
+            {
+                "sentence_template": "Zgodnie z kryterium rozpiętości kierowania wyróżniamy struktury SMUKŁE i ___.",
+                "correct_answer": "PŁASKIE",
+                "hint": "Przeciwieństwo smukłej struktury."
+            },
+            {
+                "sentence_template": "Polityka i zarządzanie w przedsiębiorstwie, nadzór, zarobki i stosunki interpersonalne ze współpracownikami i warunki pracy to przykłady czynników ___, które powodują ___ pracownika zgodnie z teorią motywacji Herzberga.",
+                "correct_answer": "higieny; niezadowolenie",
+                "hint": "Herzberg'a: co powoduje niezadowolenie, jeśli jest źle, ale nie motywuje, jeśli jest dobrze?"
+            },
+            {
+                "sentence_template": "Zgodnie z teorią motywacji Alderfera wyróżniamy potrzeby: społeczne, ___ i ___.",
+                "correct_answer": "rozwojowe egzystencjalne",
+                "hint": "Trzy kategorie potrzeb według Alderfera, podstawowe potrzeby."
+            },
+            {
+                "sentence_template": "Zgodnie z teorią ___ człowieka cechuje motywacja, jeśli jego reakcje na bodźce są konsekwentne i zgodne z dotychczasowymi wzorcami zachowań.",
+                "correct_answer": "WZMOCNIENIA",
+                "hint": "Teoria, która mówi o uczeniu się poprzez nagrody i kary."
+            },
+            {
+                "sentence_template": "Badania okresowe, ubezpieczenia, wynagrodzenie w okresie choroby, wypłaty w razie redukcji zatrudnienia to przykłady ___ zabezpieczających.",
+                "correct_answer": "ŚWIADCZEŃ",
+                "hint": "Dodatkowe korzyści dla pracownika."
+            },
+            {
+                "sentence_template": "Wyróżniamy następujące funkcje zarządzania: ___, ___, ___, ___.",
+                "correct_answer": "planowanie organizowanie motywowanie kontrolowanie ",
+                "hint": "Ostatnia z czterech klasycznych funkcji zarządzania."
+            },
+            {
+                "sentence_template": "Jeśli plan jest przejrzysty i czytelny to oznacza, że jest on ___.",
+                "correct_answer": "operacyjny",
+                "hint": "Cechy planu, który jest gotowy do wdrożenia."
+            },
+            {
+                "sentence_template": "W modelu struktury gronowej wyróżniamy ___ i ___.",
+                "correct_answer": "pracowników projekty",
+                "hint": "Dwa kluczowe elementy w strukturze gronowej (cluster structure)."
+            },
+            {
+                "sentence_template": "Osiągnięcia, uznanie, sama praca, odpowiedzialność i awans to przykłady czynników ___, które dostarczają ___ zgodnie z teorią motywacji Herzberga.",
+                "correct_answer": "motywacyjnych; zadowolenie",
+                "hint": "Herzberg'a: co naprawdę motywuje i zadowala?"
+            },
+            {
+                "sentence_template": "Dodatkowe wypłaty uzależnione od osiągnięć to ___.",
+                "correct_answer": "premie",
+                "hint": "Rodzaj dodatkowego wynagrodzenia za dobre wyniki."
+            },
+            {
+                "sentence_template": "Samochody służbowe, subsydiowane posiłki, pomoc mieszkaniowa, pożyczki, korzystanie z obiektów socjalnych i sportowych to przykłady ___ materialnych.",
+                "correct_answer": "świadczeń",
+                "hint": "Rzeczy, które firma zapewnia poza pensją."
+            },
+            {
+                "sentence_template": "Kierownik podejmujący decyzje samodzielnie w modelu Likerta charakterystyczny jest dla ___ stylu kierowania.",
+                "correct_answer": "autokratycznego",
+                "hint": "Brak partycypacji, pełna kontrola kierownika."
+            },
+            {
+                "sentence_template": "Organizacja rozumiana w kategorii cech, jakie można jej przypisać to ___ znaczenie organizacji.",
+                "correct_answer": "atrybutowe",
+                "hint": "Skupia się na właściwościach organizacji."
+            },
+            {
+                "sentence_template": "Decyzje ze względu na szczeble zarządzania dzielimy na: ___i ___.",
+                "correct_answer": "strategiczne operacyjne",
+                "hint": "Dwa główne poziomy decyzji w organizacji."
+            },
+            {
+                "sentence_template": "Zgodnie z paradygmatem ___ organizacja jest instrumentem realizacji celów.",
+                "correct_answer": "klasycznym",
+                "hint": "Paradygmat skupiający się na organizacji jako narzędziu do osiągania celów."
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let shuffledQuestions = []; // Tablica na pytania po przetasowaniu
+        let attemptedResults = []; // Tablica do przechowywania wyników odpowiedzi
+
+        const questionNumberElement = document.getElementById('questionNumber');
+        const sentenceElement = document.getElementById('sentence');
+        const answerInput = document.getElementById('answerInput');
+        const checkButton = document.getElementById('checkButton');
+        const hintButton = document.getElementById('hintButton');
+        const endTestButton = document.getElementById('endTestButton');
+        const nextButton = document.getElementById('nextButton');
+        const restartButton = document.getElementById('restartButton');
+        const feedbackElement = document.getElementById('feedback');
+        const finalScoreElement = document.getElementById('finalScore');
+        const incorrectAnswersSummary = document.getElementById('incorrectAnswersSummary');
+
+        // Funkcja do tasowania tablicy (algorytm Fisher-Yates)
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // Funkcja wyświetlająca pytanie
+        function displayQuestion() {
+            feedbackElement.classList.add('hidden');
+            feedbackElement.classList.remove('feedback-correct', 'feedback-incorrect');
+            answerInput.classList.remove('hidden');
+            // Przyciski są widoczne na początku pytania
+            checkButton.classList.remove('hidden');
+            hintButton.classList.remove('hidden');
+            endTestButton.classList.remove('hidden');
+            nextButton.classList.add('hidden'); // Przycisk "Następne Pytanie" ukryty
+            restartButton.classList.add('hidden');
+            finalScoreElement.classList.add('hidden');
+            incorrectAnswersSummary.classList.add('hidden');
+            incorrectAnswersSummary.querySelector('ul').innerHTML = '';
+
+            // Usuń klasę poświaty przy nowym pytaniu
+            answerInput.classList.remove('input-correct-glow');
+
+            if (currentQuestionIndex < shuffledQuestions.length) {
+                const question = shuffledQuestions[currentQuestionIndex];
+                questionNumberElement.textContent = `Pytanie ${currentQuestionIndex + 1} z ${shuffledQuestions.length}`;
+                sentenceElement.innerHTML = question.sentence_template.replace('___', '<span class="blank-space"></span>');
+                answerInput.value = '';
+                answerInput.disabled = false;
+                answerInput.focus();
+            } else {
+                endTest();
+            }
+        }
+
+        // Funkcja do sprawdzania odpowiedzi
+        function checkAnswer() {
+            if (answerInput.disabled) {
+                return;
+            }
+
+            const currentQuestion = shuffledQuestions[currentQuestionIndex];
+            const userAnswerRaw = answerInput.value;
+            const userAnswerProcessed = userAnswerRaw.trim().toLowerCase();
+            const correctAnswerProcessed = currentQuestion.correct_answer.toLowerCase();
+
+            console.log('--- Sprawdzanie odpowiedzi ---');
+            console.log('Wpisana odpowiedź (po obróbce):', `"${userAnswerProcessed}"`);
+            console.log('Poprawna odpowiedź (z bazy):', `"${correctAnswerProcessed}"`);
+
+            feedbackElement.classList.remove('hidden');
+            let isAnswerCorrect = false;
+
+            if (userAnswerProcessed === correctAnswerProcessed) {
+                feedbackElement.textContent = 'Poprawna odpowiedź!';
+                feedbackElement.classList.add('feedback-correct');
+                feedbackElement.classList.remove('feedback-incorrect');
+                score++;
+                isAnswerCorrect = true;
+                // Dodaj klasę dla zielonej poświaty
+                answerInput.classList.add('input-correct-glow');
+            } else {
+                feedbackElement.textContent = `Błędna odpowiedź. Poprawna to: "${currentQuestion.correct_answer}"`;
+                feedbackElement.classList.add('feedback-incorrect');
+                feedbackElement.classList.remove('feedback-correct');
+                isAnswerCorrect = false;
+                // Upewnij się, że klasa poświaty jest usunięta, jeśli odpowiedź jest błędna
+                answerInput.classList.remove('input-correct-glow');
+            }
+
+            attemptedResults.push({
+                questionNumber: currentQuestionIndex + 1,
+                sentenceTemplate: currentQuestion.sentence_template,
+                userAnswer: userAnswerRaw,
+                correctAnswer: currentQuestion.correct_answer,
+                isCorrect: isAnswerCorrect
+            });
+
+            answerInput.disabled = true; // Dezaktywuj pole wprowadzania od razu
+
+            // Ukryj przyciski "Sprawdź", "Podpowiedź", "Zakończ Test" i pokaż "Następne Pytanie" po krótkiej pauzie
+            setTimeout(() => {
+                checkButton.classList.add('hidden');
+                hintButton.classList.add('hidden');
+                endTestButton.classList.add('hidden');
+                nextButton.classList.remove('hidden');
+                nextButton.focus(); // Ustaw focus na przycisku "Następne Pytanie"
+            }, 1500); // 1.5 sekundy pauzy
+        }
+
+        // Funkcja do pokazywania podpowiedzi
+        function showHint() {
+            const hint = shuffledQuestions[currentQuestionIndex].hint;
+            if (hint) {
+                feedbackElement.textContent = `Podpowiedź: ${hint}`;
+                feedbackElement.classList.remove('hidden', 'feedback-correct', 'feedback-incorrect');
+                feedbackElement.style.color = '#555';
+                feedbackElement.style.borderColor = '#aaa';
+                feedbackElement.style.backgroundColor = '#f0f0f0';
+            } else {
+                feedbackElement.textContent = 'Brak podpowiedzi dla tego pytania.';
+                feedbackElement.classList.remove('hidden', 'feedback-correct', 'feedback-incorrect');
+                feedbackElement.style.color = '#888';
+                feedbackElement.style.borderColor = '#ccc';
+                feedbackElement.style.backgroundColor = '#f9f9f9';
+            }
+        }
+
+        // Funkcja do przejścia do następnego pytania
+        function nextQuestion() {
+            currentQuestionIndex++;
+            displayQuestion();
+        }
+
+        // Funkcja: Zakończenie testu
+        function endTest() {
+            questionNumberElement.textContent = '';
+            sentenceElement.textContent = 'Test zakończony!';
+            finalScoreElement.textContent = `Twój wynik: ${score} / ${shuffledQuestions.length}`;
+            finalScoreElement.classList.remove('hidden');
+
+            answerInput.classList.add('hidden');
+            answerInput.disabled = true;
+            checkButton.classList.add('hidden');
+            hintButton.classList.add('hidden');
+            endTestButton.classList.add('hidden');
+            nextButton.classList.add('hidden');
+            feedbackElement.classList.add('hidden');
+            feedbackElement.classList.remove('feedback-correct', 'feedback-incorrect');
+
+            // Usuń klasę poświaty po zakończeniu testu
+            answerInput.classList.remove('input-correct-glow');
+
+            // Wyświetl podsumowanie błędnych odpowiedzi
+            const ulElement = incorrectAnswersSummary.querySelector('ul');
+            ulElement.innerHTML = '';
+
+            let hasIncorrectAnswers = false;
+            attemptedResults.forEach(result => {
+                if (!result.isCorrect) {
+                    hasIncorrectAnswers = true;
+                    const listItem = document.createElement('li');
+                    // Tworzymy zdanie z odpowiedzią użytkownika w miejscu luki
+                    const filledSentence = result.sentenceTemplate.replace(
+                        '___',
+                        `<span class="your-answer">${result.userAnswer || '[brak odpowiedzi]'}</span>`
+                    );
+                    listItem.innerHTML = `
+                        <p class="original-sentence">Pytanie ${result.questionNumber}: ${filledSentence}</p>
+                        <p>Twoja odpowiedź: <span class="your-answer">${result.userAnswer || '[brak]'}</span></p>
+                        <p>Poprawna odpowiedź: <span class="correct-answer">${result.correctAnswer}</span></p>
+                    `;
+                    ulElement.appendChild(listItem);
+                }
+            });
+
+            if (hasIncorrectAnswers) {
+                incorrectAnswersSummary.classList.remove('hidden');
+            } else {
+                // Jeśli wszystkie odpowiedzi były poprawne lub nie było odpowiedzi, a test się zakończył
+                sentenceElement.textContent = 'Gratulacje! Odpowiedziałeś/aś poprawnie na wszystkie pytania.';
+                incorrectAnswersSummary.classList.add('hidden');
+            }
+
+            restartButton.classList.remove('hidden');
+            restartButton.focus();
+        }
+
+        // Funkcja do restartu aplikacji
+        function restartApp() {
+            score = 0;
+            currentQuestionIndex = 0;
+            attemptedResults = [];
+            shuffledQuestions = shuffleArray([...questions]);
+            displayQuestion();
+        }
+
+        // Obsługa zdarzeń
+        checkButton.addEventListener('click', checkAnswer);
+        hintButton.addEventListener('click', showHint);
+        endTestButton.addEventListener('click', endTest);
+        nextButton.addEventListener('click', nextQuestion);
+        restartButton.addEventListener('click', restartApp);
+
+        // Dodatkowa obsługa klawisza Enter
+        answerInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !answerInput.disabled) {
+                checkAnswer();
+            }
+        });
+
+        // Obsługa klawisza Enter dla przycisku "Następne Pytanie" i "Zacznij od Nowa"
+        document.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !nextButton.classList.contains('hidden') && document.activeElement !== answerInput) {
+                nextButton.click();
+            } else if (e.key === 'Enter' && !restartButton.classList.contains('hidden') && document.activeElement !== answerInput) {
+                restartButton.click();
+            }
+        });
+
+
+        // Inicjalizacja aplikacji - tasowanie pytań i wyświetlenie pierwszego
+        restartApp();
+    </script>
+
+</body>
+</html>
