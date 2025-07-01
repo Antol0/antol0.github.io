@@ -228,25 +228,30 @@
         // WAŻNE: Tutaj możesz edytować swoje pytania!
         // Użyj "___" (trzy podkreślenia) w miejscu, gdzie ma być brakujące słowo.
         // Pamiętaj o przecinku po każdym pytaniu (oprócz ostatniego)!
+        // Dodano opcjonalne pole "alternative_answers" dla synonimów/bliskich odpowiedzi
         const questions = [
             {
                 "sentence_template": "Wysoki poziom dbałości o personel jest w modelu Likerta jest charakterystyczny dla ___ stylu kierowania.",
                 "correct_answer": "partycypacyjnego",
+                "alternative_answers": ["partycypacyjny"], // Dodano alternatywną odpowiedź
                 "hint": "Model Likerta, dotyczy partycypacji pracowników."
             },
             {
                 "sentence_template": "Każdą sytuację zgodnie z modelem Fiedlera można opisać za pomocą trzech wymiarów: pozycji władczej kierownika, struktury zadania, stosunków pomiędzy podwładnym a ___.",
                 "correct_answer": "przełożonym",
+                "alternative_answers": ["przelozonym"],
                 "hint": "Fiedler skupiał się na relacjach w zespole."
             },
             {
                 "sentence_template": "Decyzje podejmuje się wolniej stosując styl ___ a nie autokratyczny.",
                 "correct_answer": "demokratyczny",
+                "alternative_answers": ["demokratycznego"],
                 "hint": "Przeciwieństwo autokratycznego stylu zarządzania."
             },
             {
                 "sentence_template": "Decyzje podejmuje się szybciej stosując styl ___ a nie demokratyczny.",
                 "correct_answer": "autokratyczny",
+                "alternative_answers": ["autokratycznego"],
                 "hint": "Przeciwieństwo demokratycznego stylu zarządzania."
             },
             {
@@ -257,11 +262,13 @@
             {
                 "sentence_template": "W modelu organizacji według Leavita wyróżniamy: cele i zadania, ludzi, strukturę i ___.",
                 "correct_answer": "technologię",
+                "alternative_answers": ["technologie"],
                 "hint": "Czwarty element modelu Leavita."
             },
             {
                 "sentence_template": "Zgodnie z modelem organizacji 7-S Mc Kinsey'a sukces organizacji jest silnie determinowany ___ - elementami zarządzania.",
                 "correct_answer": "miękkimi",
+                "alternative_answers": ["miekimi", "czynnikami miękkimi"],
                 "hint": "McKinsey'a 7-S, co oznacza 'miękkie' elementy?"
             },
             {
@@ -272,6 +279,7 @@
             {
                 "sentence_template": "Mintzberg dokonał podziału decyzji na: _______, _______ i ___.",
                 "correct_answer": "przedsiębiorcze adaptacyjne planistyczne",
+                "alternative_answers": ["przedsiębiorcze adaptacyjne i planistyczne", "przedsiębiorcze, adaptacyjne i planistyczne", "przedsiębiorcze, adaptacyjne, planistyczne", "przedsiebiorcze adaptacyjne planistyczne"], // Dodano alternatywne odpowiedzi z/bez przecinków, bez polskich znaków
                 "hint": "Rodzaje decyzji według Mintzberga."
             },
             {
@@ -282,16 +290,19 @@
             {
                 "sentence_template": "Wyróżniamy następujące wytyczne alternatywne sprawnego działania: _______ - uniwersalizacja, aktywizacja działania - minimalizacja interwencji, _______ - antycypacja; potencjalizacja - pełne wykorzystanie zasobów; ___ - dywersyfikacja działania.",
                 "correct_answer": "specjalizacja kunktacja koncentracja sił",
+                "alternative_answers": ["specjalizacja kunktacja koncentracja", "specjalizacja, kunktacja, koncentracja sił", "specjalizacja, kunktacja, koncentracja", "specjalizacja, kunktacja i koncentracja sił", "specjalizacja, kunktacja i koncentracja", "specjalizacja kunktacja koncentracja sil"],
                 "hint": "Wytyczne sprawnego działania, przeciwieństwo dywersyfikacji."
             },
             {
                 "sentence_template": "Do cech prawidłowego systemu kontroli zaliczamy: celowość, sprawność i szybkość, ___, ___, zrozumiałość.",
                 "correct_answer": "obiektywność elastyczność",
+                "alternative_answers": ["obiektywność, elastyczność", "obiektywnosc elastycznosc"],
                 "hint": "Kontrola powinna być sprawiedliwa i bezstronna."
             },
             {
                 "sentence_template": "Kontrola pełni funkcję ___, profilaktyczną, korygującą / ochronną, ___, instruktażową, pobudzającą.",
                 "correct_answer": "informacyjną kreatywną",
+                "alternative_answers": ["informacyjną, kreatywną", "informacyjna, kreatywna", "informacyjna kreatywna"],
                 "hint": "Jedna z podstawowych funkcji kontroli, dostarczanie danych."
             },
             {
@@ -300,38 +311,49 @@
                 "hint": "Cechy dobrze przemyślanego planu."
             },
             {
-                "sentence_template": "y więzi organizacyjne ___, funkcjonalne, techniczne, informacyjne.",
+                "sentence_template": "Wyróżniamy więzi organizacyjne ___, funkcjonalne, techniczne, informacyjne.",
                 "correct_answer": "SŁUŻBOWE",
+                "alternative_answers": ["służbowe"],
                 "hint": "Rodzaje więzi organizacyjnych, te najczęściej kojarzone z hierarchią."
             },
             {
-                "sentence_template": "Zgodnie z kryterium rozpiętości kierowania y struktury SMUKŁE i ___.",
+                "sentence_template": "Zgodnie z kryterium rozpiętości kierowania wyróżniamy struktury SMUKŁE i ___.",
                 "correct_answer": "płaskie",
+                "alternative_answers": ["plaskie"],
                 "hint": "Przeciwieństwo smukłej struktury."
             },
             {
                 "sentence_template": "Polityka i zarządzanie w przedsiębiorstwie, nadzór, zarobki i stosunki interpersonalne ze współpracownikami i warunki pracy to przykłady czynników ___, które powodują ___ pracownika zgodnie z teorią motywacji Herzberga.",
                 "correct_answer": "higieny niezadowolenie",
+                "alternative_answers": ["higieniczne niezadowolenie", "higieny, niezadowolenie", "higieniczne, niezadowolenie"],
                 "hint": "Herzberg'a: co powoduje niezadowolenie, jeśli jest źle, ale nie motywuje, jeśli jest dobrze?"
             },
             {
-                "sentence_template": "Zgodnie z teorią motywacji Alderfera y potrzeby: społeczne, ___ i ___.",
+                "sentence_template": "Zgodnie z teorią motywacji Alderfera wyróżniamy potrzeby: społeczne, ___ i ___.",
                 "correct_answer": "rozwojowe egzystencjalne",
+                "alternative_answers": ["rozwojowe, egzystencjalne", "rozwoju egzystencji", "rozwojowe egzystencji", "egzystencjalne rozwojowe"], // Dodano kolejność
                 "hint": "Trzy kategorie potrzeb według Alderfera, podstawowe potrzeby."
             },
             {
                 "sentence_template": "Zgodnie z teorią ___ człowieka cechuje motywacja, jeśli jego reakcje na bodźce są konsekwentne i zgodne z dotychczasowymi wzorcami zachowań.",
                 "correct_answer": "WZMOCNIENIA",
+                "alternative_answers": ["wzmocnienia"],
                 "hint": "Teoria, która mówi o uczeniu się poprzez nagrody i kary."
             },
             {
                 "sentence_template": "Badania okresowe, ubezpieczenia, wynagrodzenie w okresie choroby, wypłaty w razie redukcji zatrudnienia to przykłady ___ zabezpieczających.",
                 "correct_answer": "ŚWIADCZEŃ",
+                "alternative_answers": ["świadczeń"],
                 "hint": "Dodatkowe korzyści dla pracownika."
             },
             {
                 "sentence_template": "Wyróżniamy następujące funkcje zarządzania: ___, ___, ___, ___.",
                 "correct_answer": "planowanie organizowanie motywowanie kontrolowanie",
+                "alternative_answers": [
+                    "planowanie, organizowanie, motywowanie, kontrolowanie",
+                    "planowanie organizowanie motywowanie i kontrolowanie",
+                    "planowanie, organizowanie, motywowanie i kontrolowanie"
+                ],
                 "hint": "Ostatnia z czterech klasycznych funkcji zarządzania."
             },
             {
@@ -342,11 +364,13 @@
             {
                 "sentence_template": "W modelu struktury gronowej wyróżniamy ___ i ___.",
                 "correct_answer": "pracowników projekty",
+                "alternative_answers": ["pracowników, projekty", "projekty, pracowników", "projekty pracownikow"],
                 "hint": "Dwa kluczowe elementy w strukturze gronowej (cluster structure)."
             },
             {
                 "sentence_template": "Osiągnięcia, uznanie, sama praca, odpowiedzialność i awans to przykłady czynników ___, które dostarczają ___ zgodnie z teorią motywacji Herzberga.",
                 "correct_answer": "motywacyjnych zadowolenie",
+                "alternative_answers": ["motywujące zadowolenie", "motywacyjnych, zadowolenie", "motywujące, zadowolenie"],
                 "hint": "Herzberg'a: co naprawdę motywuje i zadowala?"
             },
             {
@@ -357,6 +381,7 @@
             {
                 "sentence_template": "Samochody służbowe, subsydiowane posiłki, pomoc mieszkaniowa, pożyczki, korzystanie z obiektów socjalnych i sportowych to przykłady ___ materialnych.",
                 "correct_answer": "świadczeń",
+                "alternative_answers": ["swiadczen"],
                 "hint": "Rzeczy, które firma zapewnia poza pensją."
             },
             {
@@ -372,6 +397,7 @@
             {
                 "sentence_template": "Decyzje ze względu na szczeble zarządzania dzielimy na: ___i ___.",
                 "correct_answer": "strategiczne operacyjne",
+                "alternative_answers": ["strategiczne, operacyjne", "strategiczne i operacyjne"],
                 "hint": "Dwa główne poziomy decyzji w organizacji."
             },
             {
@@ -437,6 +463,15 @@
             }
         }
 
+        // Funkcja do normalizacji odpowiedzi (małe litery, bez nadmiernych spacji, bez znaków diakrytycznych)
+        function normalizeAnswer(answer) {
+            return answer
+                .toLowerCase()
+                .replace(/\s+/g, ' ') // Zamień wielokrotne spacje na pojedyncze
+                .trim()
+                .normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // Usuń znaki diakrytyczne
+        }
+
         // Funkcja do sprawdzania odpowiedzi
         function checkAnswer() {
             if (answerInput.disabled) {
@@ -445,30 +480,38 @@
 
             const currentQuestion = shuffledQuestions[currentQuestionIndex];
             const userAnswerRaw = answerInput.value;
-            const userAnswerProcessed = userAnswerRaw.trim().toLowerCase();
-            const correctAnswerProcessed = currentQuestion.correct_answer.toLowerCase();
+            const userAnswerProcessed = normalizeAnswer(userAnswerRaw);
+            
+            // Przygotuj listę wszystkich poprawnych odpowiedzi (główna + alternatywne)
+            const possibleCorrectAnswers = [
+                normalizeAnswer(currentQuestion.correct_answer)
+            ];
+            if (currentQuestion.alternative_answers) {
+                currentQuestion.alternative_answers.forEach(alt => {
+                    possibleCorrectAnswers.push(normalizeAnswer(alt));
+                });
+            }
 
             console.log('--- Sprawdzanie odpowiedzi ---');
             console.log('Wpisana odpowiedź (po obróbce):', `"${userAnswerProcessed}"`);
-            console.log('Poprawna odpowiedź (z bazy):', `"${correctAnswerProcessed}"`);
+            console.log('Możliwe poprawne odpowiedzi (po obróbce):', possibleCorrectAnswers);
 
             feedbackElement.classList.remove('hidden');
             let isAnswerCorrect = false;
 
-            if (userAnswerProcessed === correctAnswerProcessed) {
+            // Sprawdź, czy odpowiedź użytkownika pasuje do którejkolwiek z możliwych poprawnych odpowiedzi
+            if (possibleCorrectAnswers.includes(userAnswerProcessed)) {
                 feedbackElement.textContent = 'Poprawna odpowiedź!';
                 feedbackElement.classList.add('feedback-correct');
                 feedbackElement.classList.remove('feedback-incorrect');
                 score++;
                 isAnswerCorrect = true;
-                // Dodaj klasę dla zielonej poświaty
                 answerInput.classList.add('input-correct-glow');
             } else {
                 feedbackElement.textContent = `Błędna odpowiedź. Poprawna to: "${currentQuestion.correct_answer}"`;
                 feedbackElement.classList.add('feedback-incorrect');
                 feedbackElement.classList.remove('feedback-correct');
                 isAnswerCorrect = false;
-                // Upewnij się, że klasa poświaty jest usunięta, jeśli odpowiedź jest błędna
                 answerInput.classList.remove('input-correct-glow');
             }
 
