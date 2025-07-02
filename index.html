@@ -18,6 +18,7 @@
             min-height: 100vh;
             padding: 20px;
             box-sizing: border-box;
+            transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for dark mode */
         }
 
         .container {
@@ -29,12 +30,14 @@
             width: 100%;
             text-align: center;
             margin-bottom: 20px; /* Dodany odstęp od dołu, jeśli reklama jest pod nim */
+            transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for dark mode */
         }
 
         h1 {
             color: #2c3e50;
             margin-bottom: 30px;
             font-size: 2.2em;
+            transition: color 0.3s ease; /* Smooth transition for dark mode */
         }
 
         #sentence {
@@ -49,6 +52,7 @@
             width: 150px; /* Długość podkreślenia */
             border-bottom: 2px solid #3498db;
             text-align: center;
+            transition: border-color 0.3s ease; /* Smooth transition for dark mode */
         }
 
         #answerInput {
@@ -59,7 +63,7 @@
             border-radius: 6px;
             font-size: 1.1em;
             box-sizing: border-box;
-            transition: box-shadow 0.4s ease-in-out, border-color 0.4s ease-in-out; /* Zwiększona płynność przejścia */
+            transition: box-shadow 0.4s ease-in-out, border-color 0.4s ease-in-out, background-color 0.3s ease, color 0.3s ease; /* Zwiększona płynność przejścia i dla dark mode */
         }
 
         /* Udoskonalona klasa CSS dla zielonej poświaty */
@@ -83,7 +87,7 @@
             border-radius: 6px;
             font-size: 1.1em;
             cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
+            transition: background-color 0.3s ease, transform 0.2s ease, color 0.3s ease;
             min-width: 150px;
         }
 
@@ -103,6 +107,7 @@
             border-radius: 6px;
             min-height: 40px; /* Aby tekst nie skakał */
             border: 1px solid transparent; /* Domyślna ramka, by nie skakało przy zmianie */
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; /* Smooth transition for dark mode */
         }
 
         .feedback-correct {
@@ -123,12 +128,12 @@
             border: 1px solid #e67e22;
         }
 
-
         .results {
             font-size: 1.5em;
             font-weight: bold;
             color: #2c3e50;
             margin-top: 30px;
+            transition: color 0.3s ease; /* Smooth transition for dark mode */
         }
 
         #incorrectAnswersSummary {
@@ -136,6 +141,7 @@
             text-align: left;
             border-top: 1px solid #eee;
             padding-top: 20px;
+            transition: border-color 0.3s ease; /* Smooth transition for dark mode */
         }
 
         #incorrectAnswersSummary h2 {
@@ -158,11 +164,13 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
             font-size: 1.1em;
             line-height: 1.5;
+            transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for dark mode */
         }
 
         #incorrectAnswersSummary .original-sentence {
             font-weight: bold;
             color: #333;
+            transition: color 0.3s ease; /* Smooth transition for dark mode */
         }
 
         #incorrectAnswersSummary .your-answer {
@@ -187,6 +195,7 @@
             margin-top: 20px;
             height: 10px; /* Wysokość paska */
             overflow: hidden; /* Upewnij się, że pasek postępu nie wychodzi poza kontener */
+            transition: background-color 0.3s ease; /* Smooth transition for dark mode */
         }
 
         #progressBar {
@@ -194,7 +203,7 @@
             width: 0%;
             background-color: #3498db;
             border-radius: 5px;
-            transition: width 0.5s ease-in-out; /* Płynne przejście szerokości */
+            transition: width 0.5s ease-in-out, background-color 0.3s ease; /* Płynne przejście szerokości i dla dark mode */
         }
 
         /* Style dla historii wyników */
@@ -204,12 +213,14 @@
             border-top: 1px solid #eee;
             padding-top: 20px;
             width: 100%;
+            transition: border-color 0.3s ease; /* Smooth transition for dark mode */
         }
 
         #resultsHistory h2 {
             color: #2c3e50;
             font-size: 1.6em;
             margin-bottom: 15px;
+            transition: color 0.3s ease; /* Smooth transition for dark mode */
         }
 
         #resultsHistory ul {
@@ -229,6 +240,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for dark mode */
         }
 
         #resultsHistory .score-text {
@@ -239,6 +251,175 @@
         #resultsHistory .date-text {
             font-size: 0.9em;
             color: #777;
+            transition: color 0.3s ease; /* Smooth transition for dark mode */
+        }
+
+        /* Styles for the ad banner */
+        .ad-banner {
+            border: 1px solid #ffdd44; /* Cieńsza żółta ramka */
+            background-color: #fffaf0; /* Jaśniejsze tło */
+            padding: 10px; /* Zmniejszony padding */
+            margin: 15px auto; /* Mniejsze odstępy */
+            max-width: 300px; /* Znacznie mniejsza szerokość */
+            text-align: center;
+            font-family: 'Arial', sans-serif;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08); /* Delikatniejszy cień */
+            border-radius: 6px;
+            font-size: 0.9em; /* Ogólnie mniejsza czcionka */
+            transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for dark mode */
+        }
+        .ad-banner p {
+            color: #e67e22;
+            margin-bottom: 5px;
+            font-weight: bold;
+            transition: color 0.3s ease; /* Smooth transition for dark mode */
+        }
+        .ad-banner p:last-of-type {
+            font-size: 0.85em;
+            color: #333;
+        }
+        .ad-banner a {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            padding: 6px 12px; /* Mniejszy przycisk */
+            border-radius: 4px;
+            text-decoration: none;
+            margin-top: 10px;
+            font-size: 0.8em; /* Mniejsza czcionka przycisku */
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .ad-banner a:hover {
+            background-color: #2980b9;
+        }
+        .ad-banner .disclaimer {
+            font-size: 0.6em;
+            color: #999;
+            margin-top: 8px;
+            transition: color 0.3s ease; /* Smooth transition for dark mode */
+        }
+
+        /* --- Dark Mode Styles --- */
+        body.dark-mode {
+            background-color: #282c34;
+            color: #e0e0e0;
+        }
+
+        .dark-mode .container {
+            background-color: #3a3f47;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .dark-mode h1,
+        .dark-mode .results,
+        .dark-mode #resultsHistory h2,
+        .dark-mode #incorrectAnswersSummary .original-sentence,
+        .dark-mode #incorrectAnswersSummary .your-answer,
+        .dark-mode #incorrectAnswersSummary .correct-answer {
+            color: #e0e0e0;
+        }
+        .dark-mode #incorrectAnswersSummary h2 {
+            color: #ff726d; /* Slightly different red for dark mode */
+        }
+
+
+        .dark-mode .blank-space {
+            border-bottom-color: #61afef;
+        }
+
+        .dark-mode #answerInput {
+            background-color: #4a4f58;
+            color: #e0e0e0;
+            border-color: #555;
+        }
+
+        .dark-mode .input-correct-glow {
+            border-color: #50fa7b; /* Brighter green for dark mode */
+            box-shadow: 0 0 25px rgba(80, 250, 123, 0.6); /* Brighter glow */
+        }
+
+        .dark-mode button {
+            background-color: #61afef;
+            color: #282c34;
+        }
+
+        .dark-mode button:hover {
+            background-color: #569cd6;
+        }
+
+        .dark-mode #feedback {
+            background-color: #4a4f58;
+            color: #e0e0e0;
+            border-color: #666;
+        }
+
+        .dark-mode .feedback-correct {
+            background-color: #386b4a; /* Darker green background */
+            color: #a7f0ba; /* Lighter green text */
+            border-color: #a7f0ba;
+        }
+
+        .dark-mode .feedback-incorrect {
+            background-color: #6b3838; /* Darker red background */
+            color: #ff918c; /* Lighter red text */
+            border-color: #ff918c;
+        }
+
+        .dark-mode .feedback-warning {
+            background-color: #6b5a38; /* Darker yellow background */
+            color: #ffd699; /* Lighter yellow text */
+            border-color: #ffd699;
+        }
+
+        .dark-mode #progressBarContainer {
+            background-color: #4a4f58;
+        }
+
+        .dark-mode #progressBar {
+            background-color: #61afef;
+        }
+
+        .dark-mode #incorrectAnswersSummary {
+            border-top-color: #555;
+        }
+
+        .dark-mode #incorrectAnswersSummary li {
+            background-color: #4a4f58;
+            border-color: #6b3838;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .dark-mode #resultsHistory {
+            border-top-color: #555;
+        }
+
+        .dark-mode #resultsHistory li {
+            background-color: #4a4f58;
+            border-color: #555;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .dark-mode #resultsHistory .score-text {
+            color: #61afef;
+        }
+        .dark-mode #resultsHistory .date-text,
+        .dark-mode #questionNumber {
+            color: #b0b0b0;
+        }
+
+        .dark-mode .ad-banner {
+            background-color: #4a4f58;
+            border-color: #b08d0f;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        .dark-mode .ad-banner p {
+            color: #ffd700;
+        }
+        .dark-mode .ad-banner p:last-of-type {
+            color: #e0e0e0;
+        }
+        .dark-mode .ad-banner .disclaimer {
+            color: #b0b0b0;
         }
     </style>
 </head>
@@ -262,7 +443,7 @@
             <button id="nextButton" class="hidden">Następne Pytanie</button>
             <button id="retakeIncorrectButton" class="hidden" style="background-color: #e67e22;">Powtórz błędne</button>
             <button id="restartButton" class="hidden">Zacznij od Nowa (wszystkie)</button>
-        </div>
+            <button id="darkModeToggle">Przełącz na tryb ciemny</button> </div>
 
         <p id="feedback" class="hidden" aria-live="polite"></p>
         <p id="finalScore" class="hidden results" aria-live="polite"></p>
@@ -278,31 +459,11 @@
         </div>
     </div>
 
-    <div style="
-        border: 1px solid #ffdd44; /* Cieńsza żółta ramka */
-        background-color: #fffaf0; /* Jaśniejsze tło */
-        padding: 10px; /* Zmniejszony padding */
-        margin: 15px auto; /* Mniejsze odstępy */
-        max-width: 300px; /* Znacznie mniejsza szerokość */
-        text-align: center;
-        font-family: 'Arial', sans-serif;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.08); /* Delikatniejszy cień */
-        border-radius: 6px;
-        font-size: 0.9em; /* Ogólnie mniejsza czcionka */
-    ">
+    <div class="ad-banner">
         <p style="color: #e67e22; margin-bottom: 5px; font-weight: bold;">Ucz się szybciej!</p>
         <p style="font-size: 0.85em; color: #333;">Zobacz "Super Skrót Zarządzania"! ✨</p>
-        <a href="https://ue.poznan.pl/osoby/dr-hab-gabriela-roszyk-kowalska/" target="_blank" style="
-            display: inline-block;
-            background-color: #3498db;
-            color: white;
-            padding: 6px 12px; /* Mniejszy przycisk */
-            border-radius: 4px;
-            text-decoration: none;
-            margin-top: 10px;
-            font-size: 0.8em; /* Mniejsza czcionka przycisku */
-        ">KLIKNIJ TUTAJ</a>
-        <p style="font-size: 0.6em; color: #999; margin-top: 8px;">*Dla ambitnych studentów. Sprawdź warunki.</p>
+        <a href="https://ue.poznan.pl/osoby/dr-hab-gabriela-roszyk-kowalska/" target="_blank">KLIKNIJ TUTAJ</a>
+        <p class="disclaimer">*Dla ambitnych studentów. Sprawdź warunki.</p>
     </div>
     <script>
         // --- Baza pytań ---
@@ -511,8 +672,10 @@
         const progressBar = document.getElementById('progressBar'); // Nowy element
         const resultsHistory = document.getElementById('resultsHistory'); // Nowy element
         const historyList = document.getElementById('historyList'); // Nowy element
+        const darkModeToggle = document.getElementById('darkModeToggle'); // DARK MODE BUTTON
 
         const LOCAL_STORAGE_KEY = 'quizResultsHistory'; // Klucz do Local Storage
+        const DARK_MODE_KEY = 'darkModeEnabled'; // Klucz do Local Storage dla trybu ciemnego
 
         // Funkcja do tasowania tablicy (algorytm Fisher-Yates)
         function shuffleArray(array) {
@@ -712,130 +875,127 @@
             resultsHistory.classList.remove('hidden');
         }
 
-
-        // Funkcja: Zakończenie testu
-        function endTest() {
-            questionNumberElement.textContent = '';
-            sentenceElement.textContent = 'Test zakończony!';
-            finalScoreElement.textContent = `Twój wynik: ${score} / ${shuffledQuestions.length}`;
+        // Funkcja kończąca test i wyświetlająca wyniki
+        function endTest(isRetake = false) {
             finalScoreElement.classList.remove('hidden');
-
-            // Określ typ testu do zapisu w historii
-            const testType = (shuffledQuestions.length === questions.length) ? 'pełny' : 'błędne';
-            saveResultToHistory(score, shuffledQuestions.length, testType); // Zapisz wynik
-
-            answerInput.classList.add('hidden');
-            answerInput.disabled = true;
+            incorrectAnswersSummary.classList.remove('hidden');
             checkButton.classList.add('hidden');
             hintButton.classList.add('hidden');
             endTestButton.classList.add('hidden');
             nextButton.classList.add('hidden');
+            answerInput.classList.add('hidden');
             feedbackElement.classList.add('hidden');
-            feedbackElement.classList.remove('feedback-correct', 'feedback-incorrect', 'feedback-warning');
-            progressBarContainer.classList.add('hidden'); // Ukryj pasek postępu
+            questionNumberElement.textContent = '';
+            sentenceElement.textContent = '';
+            progressBar.style.width = '100%'; // Pasek postępu na 100%
 
-            answerInput.classList.remove('input-correct-glow');
+            const incorrectAttempts = attemptedResults.filter(result => !result.isCorrect);
+            const totalQuestionsAttempted = attemptedResults.length;
 
-            const ulElement = incorrectAnswersSummary.querySelector('ul');
-            ulElement.innerHTML = '';
+            finalScoreElement.textContent = `Twój wynik: ${score} / ${totalQuestionsAttempted} poprawnych odpowiedzi!`;
 
-            let hasIncorrectAnswers = false;
-            attemptedResults.forEach(result => {
-                if (!result.isCorrect) {
-                    hasIncorrectAnswers = true;
+            const summaryList = incorrectAnswersSummary.querySelector('ul');
+            summaryList.innerHTML = ''; // Wyczyść poprzednie błędy
+
+            if (incorrectAttempts.length > 0) {
+                incorrectAttempts.forEach(attempt => {
                     const listItem = document.createElement('li');
-                    const filledSentence = result.originalQuestion.sentence_template.replace(
-                        '___',
-                        `<span class="your-answer">${result.userAnswer || '[brak odpowiedzi]'}</span>`
-                    );
                     listItem.innerHTML = `
-                        <p class="original-sentence">Pytanie ${result.originalQuestion.sentence_template.replace('___', '______')}</p>
-                        <p>Twoja odpowiedź: <span class="your-answer">${result.userAnswer || '[brak]'}</span></p>
-                        <p>Poprawna odpowiedź: <span class="correct-answer">${result.originalQuestion.correct_answer}</span></p>
+                        <p><span class="original-sentence">Pytanie: ${attempt.originalQuestion.sentence_template.replace('___', `<span style="font-style: italic; color: #777;">(${attempt.originalQuestion.correct_answer})</span>`)}</span></p>
+                        <p>Twoja odpowiedź: <span class="your-answer">${attempt.userAnswer === '' ? '[Brak odpowiedzi]' : attempt.userAnswer}</span></p>
+                        <p>Poprawna odpowiedź: <span class="correct-answer">${attempt.originalQuestion.correct_answer}</span></p>
                     `;
-                    ulElement.appendChild(listItem);
-                }
-            });
-
-            if (hasIncorrectAnswers) {
-                incorrectAnswersSummary.classList.remove('hidden');
+                    summaryList.appendChild(listItem);
+                });
                 retakeIncorrectButton.classList.remove('hidden');
+                retakeIncorrectButton.focus();
             } else {
-                sentenceElement.textContent = 'Gratulacje! Odpowiedziałeś/aś poprawnie na wszystkie pytania.';
-                incorrectAnswersSummary.classList.add('hidden');
-                retakeIncorrectButton.classList.add('hidden');
+                summaryList.innerHTML = '<li>Gratulacje! Wszystkie odpowiedzi były poprawne!</li>';
             }
-
             restartButton.classList.remove('hidden');
-            restartButton.focus();
+
+            saveResultToHistory(score, totalQuestionsAttempted, isRetake ? 'powtórka błędnych' : 'pełny test');
         }
 
-        // Nowa funkcja: Powtórz test tylko z błędnymi odpowiedziami
-        function retakeIncorrectAnswers() {
-            score = 0;
+        // Funkcja do ponownego rozpoczęcia testu (wszystkie pytania)
+        function restartTest() {
             currentQuestionIndex = 0;
-            
+            score = 0;
+            attemptedResults = [];
+            shuffledQuestions = shuffleArray([...questions]); // Tasuj wszystkie pytania
+            displayQuestion();
+        }
+
+        // Funkcja do powtórzenia tylko błędnych pytań
+        function retakeIncorrect() {
             const incorrectQuestions = attemptedResults
                 .filter(result => !result.isCorrect)
                 .map(result => result.originalQuestion);
 
-            attemptedResults = []; 
-
             if (incorrectQuestions.length > 0) {
-                shuffledQuestions = shuffleArray(incorrectQuestions);
-                progressBarContainer.classList.remove('hidden'); // Pokaż pasek postępu
+                currentQuestionIndex = 0;
+                score = 0;
+                attemptedResults = [];
+                shuffledQuestions = shuffleArray(incorrectQuestions); // Tasuj tylko błędne pytania
                 displayQuestion();
             } else {
-                sentenceElement.textContent = 'Brak pytań do powtórzenia. Brawo!';
-                retakeIncorrectButton.classList.add('hidden');
-                restartButton.classList.remove('hidden');
-                progressBarContainer.classList.add('hidden'); // Ukryj pasek postępu
-                displayResultsHistory(); // Pokaż historię, jeśli nie ma pytań do powtórki
+                alert("Nie masz żadnych błędnych odpowiedzi do powtórzenia!");
+                displayResultsHistory(); // Pokaż historię wyników, jeśli nie ma nic do powtórki
             }
         }
 
-
-        // Funkcja do restartu aplikacji (pełny test)
-        function restartApp() {
-            score = 0;
-            currentQuestionIndex = 0;
-            attemptedResults = [];
-            shuffledQuestions = shuffleArray([...questions]);
-            progressBarContainer.classList.remove('hidden'); // Pokaż pasek postępu
-            displayQuestion();
+        // --- Dark Mode Logic ---
+        function enableDarkMode() {
+            document.body.classList.add('dark-mode');
+            localStorage.setItem(DARK_MODE_KEY, 'true');
+            darkModeToggle.textContent = 'Przełącz na tryb jasny';
         }
 
-        // Obsługa zdarzeń
+        function disableDarkMode() {
+            document.body.classList.remove('dark-mode');
+            localStorage.setItem(DARK_MODE_KEY, 'false');
+            darkModeToggle.textContent = 'Przełącz na tryb ciemny';
+        }
+
+        function toggleDarkMode() {
+            if (document.body.classList.contains('dark-mode')) {
+                disableDarkMode();
+            } else {
+                enableDarkMode();
+            }
+        }
+
+        function loadDarkModePreference() {
+            const isDarkModeEnabled = localStorage.getItem(DARK_MODE_KEY);
+            if (isDarkModeEnabled === 'true') {
+                enableDarkMode();
+            } else {
+                disableDarkMode(); // Ensure it's explicitly set to light mode if not 'true'
+            }
+        }
+
+        // Event Listeners
         checkButton.addEventListener('click', checkAnswer);
         hintButton.addEventListener('click', showHint);
-        endTestButton.addEventListener('click', endTest);
+        endTestButton.addEventListener('click', () => endTest(false));
         nextButton.addEventListener('click', nextQuestion);
-        restartButton.addEventListener('click', restartApp);
-        retakeIncorrectButton.addEventListener('click', retakeIncorrectAnswers);
-
-        // Zmodyfikowana obsługa klawisza Enter
-        document.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                if (!answerInput.disabled && !isTransitioning) {
+        restartButton.addEventListener('click', restartTest);
+        retakeIncorrectButton.addEventListener('click', () => retakeIncorrect());
+        answerInput.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+                if (nextButton.classList.contains('hidden')) {
                     checkAnswer();
-                } else if (!nextButton.classList.contains('hidden')) {
-                    nextButton.click(); 
-                } else if (!retakeIncorrectButton.classList.contains('hidden')) {
-                    retakeIncorrectButton.click();
-                } else if (!restartButton.classList.contains('hidden')) {
-                    restartButton.click();
+                } else {
+                    nextQuestion();
                 }
-                e.preventDefault();
             }
         });
+        darkModeToggle.addEventListener('click', toggleDarkMode); // Event listener for dark mode button
 
-        // Inicjalizacja aplikacji - tasowanie pytań i wyświetlenie pierwszego
-        // Wywołaj displayResultsHistory na starcie, aby pokazać historię, jeśli użytkownik nie jest w trakcie quizu
-        restartApp(); // Rozpocznij quiz
-        // Jeśli chcesz, aby historia była widoczna od razu po załadowaniu strony, bez rozpoczynania quizu:
-        // Możesz wywołać displayResultsHistory() tutaj, a restartApp() przenieść do przycisku "Rozpocznij Quiz"
-        // Na potrzeby obecnej struktury, po prostu upewnij się, że historia jest widoczna po zakończeniu testu.
+        // Initial setup
+        loadDarkModePreference(); // Load dark mode preference on page load
+        restartTest(); // Start a new test when the page loads
+        displayResultsHistory(); // Display results history on load
     </script>
-
 </body>
 </html>
