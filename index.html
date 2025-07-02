@@ -31,6 +31,33 @@
             text-align: center;
             margin-bottom: 20px; /* Dodany odstęp od dołu, jeśli reklama jest pod nim */
             transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for dark mode */
+            position: relative; /* Dodane dla pozycjonowania przycisku dark mode */
+        }
+
+        /* Styl dla przycisku Dark Mode w prawym górnym rogu */
+        #darkModeToggle {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background-color: #6c757d; /* Kolor szary */
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px; /* Zaokrąglone rogi */
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, color 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            min-width: unset; /* Resetuj min-width z ogólnego stylu button */
+        }
+
+        #darkModeToggle:hover {
+            background-color: #5a6268;
+            transform: translateY(-1px);
+        }
+
+        #darkModeToggle:active {
+            transform: translateY(0);
         }
 
         h1 {
@@ -79,7 +106,7 @@
             flex-wrap: wrap; /* Aby przyciski przechodziły do nowej linii na małych ekranach */
         }
 
-        button {
+        button:not(#darkModeToggle) { /* Wyklucz przycisk dark mode z tego stylu */
             background-color: #3498db;
             color: white;
             border: none;
@@ -91,12 +118,12 @@
             min-width: 150px;
         }
 
-        button:hover {
+        button:not(#darkModeToggle):hover {
             background-color: #2980b9;
             transform: translateY(-2px);
         }
 
-        button:active {
+        button:not(#darkModeToggle):active {
             transform: translateY(0);
         }
 
@@ -310,6 +337,16 @@
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
         }
 
+        .dark-mode #darkModeToggle {
+            background-color: #5a6268;
+            color: #e0e0e0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        }
+
+        .dark-mode #darkModeToggle:hover {
+            background-color: #6c757d;
+        }
+
         .dark-mode h1,
         .dark-mode .results,
         .dark-mode #resultsHistory h2,
@@ -338,12 +375,12 @@
             box-shadow: 0 0 25px rgba(80, 250, 123, 0.6); /* Brighter glow */
         }
 
-        .dark-mode button {
+        .dark-mode button:not(#darkModeToggle) {
             background-color: #61afef;
             color: #282c34;
         }
 
-        .dark-mode button:hover {
+        .dark-mode button:not(#darkModeToggle):hover {
             background-color: #569cd6;
         }
 
@@ -426,6 +463,8 @@
 <body>
 
     <div class="container">
+        <button id="darkModeToggle">Przełącz na tryb ciemny</button> 
+
         <h1>Uzupełnij Brakujące Słowo</h1>
         <p id="questionNumber" style="font-size: 0.9em; color: #777; margin-bottom: 15px;"></p>
         
@@ -443,7 +482,7 @@
             <button id="nextButton" class="hidden">Następne Pytanie</button>
             <button id="retakeIncorrectButton" class="hidden" style="background-color: #e67e22;">Powtórz błędne</button>
             <button id="restartButton" class="hidden">Zacznij od Nowa (wszystkie)</button>
-            <button id="darkModeToggle">Przełącz na tryb ciemny</button> </div>
+        </div>
 
         <p id="feedback" class="hidden" aria-live="polite"></p>
         <p id="finalScore" class="hidden results" aria-live="polite"></p>
@@ -948,13 +987,15 @@
         function enableDarkMode() {
             document.body.classList.add('dark-mode');
             localStorage.setItem(DARK_MODE_KEY, 'true');
-            darkModeToggle.textContent = 'Przełącz na tryb jasny';
+            darkModeToggle.textContent = 'Jasny'; // Skrócony tekst dla przycisku
+            darkModeToggle.title = 'Przełącz na tryb jasny'; // Dodaj tooltip
         }
 
         function disableDarkMode() {
             document.body.classList.remove('dark-mode');
             localStorage.setItem(DARK_MODE_KEY, 'false');
-            darkModeToggle.textContent = 'Przełącz na tryb ciemny';
+            darkModeToggle.textContent = 'Ciemny'; // Skrócony tekst dla przycisku
+            darkModeToggle.title = 'Przełącz na tryb ciemny'; // Dodaj tooltip
         }
 
         function toggleDarkMode() {
