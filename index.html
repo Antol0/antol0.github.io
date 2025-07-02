@@ -178,6 +178,68 @@
         .hidden {
             display: none;
         }
+
+        /* Style dla paska postępu */
+        #progressBarContainer {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            margin-top: 20px;
+            height: 10px; /* Wysokość paska */
+            overflow: hidden; /* Upewnij się, że pasek postępu nie wychodzi poza kontener */
+        }
+
+        #progressBar {
+            height: 100%;
+            width: 0%;
+            background-color: #3498db;
+            border-radius: 5px;
+            transition: width 0.5s ease-in-out; /* Płynne przejście szerokości */
+        }
+
+        /* Style dla historii wyników */
+        #resultsHistory {
+            margin-top: 40px;
+            text-align: left;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+            width: 100%;
+        }
+
+        #resultsHistory h2 {
+            color: #2c3e50;
+            font-size: 1.6em;
+            margin-bottom: 15px;
+        }
+
+        #resultsHistory ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        #resultsHistory li {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+            font-size: 1.1em;
+            line-height: 1.5;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #resultsHistory .score-text {
+            font-weight: bold;
+            color: #3498db;
+        }
+
+        #resultsHistory .date-text {
+            font-size: 0.9em;
+            color: #777;
+        }
     </style>
 </head>
 <body>
@@ -185,6 +247,11 @@
     <div class="container">
         <h1>Uzupełnij Brakujące Słowo</h1>
         <p id="questionNumber" style="font-size: 0.9em; color: #777; margin-bottom: 15px;"></p>
+        
+        <div id="progressBarContainer">
+            <div id="progressBar"></div>
+        </div>
+
         <p id="sentence"></p>
         <input type="text" id="answerInput" placeholder="Wpisz brakujące słowo" autocomplete="off" aria-label="Wpisz brakujące słowo w zdaniu">
 
@@ -193,7 +260,9 @@
             <button id="hintButton">Podpowiedź</button>
             <button id="endTestButton">Zakończ Test</button>
             <button id="nextButton" class="hidden">Następne Pytanie</button>
-            <button id="retakeIncorrectButton" class="hidden" style="background-color: #e67e22;">Powtórz błędne</button> <button id="restartButton" class="hidden">Zacznij od Nowa (wszystkie)</button> </div>
+            <button id="retakeIncorrectButton" class="hidden" style="background-color: #e67e22;">Powtórz błędne</button>
+            <button id="restartButton" class="hidden">Zacznij od Nowa (wszystkie)</button>
+        </div>
 
         <p id="feedback" class="hidden" aria-live="polite"></p>
         <p id="finalScore" class="hidden results" aria-live="polite"></p>
@@ -201,6 +270,11 @@
         <div id="incorrectAnswersSummary" class="hidden">
             <h2>Pytania z błędnymi odpowiedziami:</h2>
             <ul></ul>
+        </div>
+
+        <div id="resultsHistory" class="hidden">
+            <h2>Historia Twoich Wyników</h2>
+            <ul id="historyList"></ul>
         </div>
     </div>
 
@@ -420,6 +494,7 @@
         let attemptedResults = []; // Tablica do przechowywania wyników odpowiedzi z pełnymi obiektami pytań
         let isTransitioning = false; // Flaga do kontroli przejścia między stanami (zapobiega podwójnym wywołaniom)
 
+        // Elementy DOM
         const questionNumberElement = document.getElementById('questionNumber');
         const sentenceElement = document.getElementById('sentence');
         const answerInput = document.getElementById('answerInput');
@@ -427,11 +502,17 @@
         const hintButton = document.getElementById('hintButton');
         const endTestButton = document.getElementById('endTestButton');
         const nextButton = document.getElementById('nextButton');
-        const retakeIncorrectButton = document.getElementById('retakeIncorrectButton'); // Nowy przycisk
+        const retakeIncorrectButton = document.getElementById('retakeIncorrectButton');
         const restartButton = document.getElementById('restartButton');
         const feedbackElement = document.getElementById('feedback');
         const finalScoreElement = document.getElementById('finalScore');
         const incorrectAnswersSummary = document.getElementById('incorrectAnswersSummary');
+        const progressBarContainer = document.getElementById('progressBarContainer'); // Nowy element
+        const progressBar = document.getElementById('progressBar'); // Nowy element
+        const resultsHistory = document.getElementById('resultsHistory'); // Nowy element
+        const historyList = document.getElementById('historyList'); // Nowy element
+
+        const LOCAL_STORAGE_KEY = 'quizResultsHistory'; // Klucz do Local Storage
 
         // Funkcja do tasowania tablicy (algorytm Fisher-Yates)
         function shuffleArray(array) {
@@ -440,6 +521,16 @@
                 [array[i], array[j]] = [array[j], array[i]];
             }
             return array;
+        }
+
+        // Funkcja do aktualizacji paska postępu
+        function updateProgressBar() {
+            if (shuffledQuestions.length === 0) {
+                progressBar.style.width = '0%';
+                return;
+            }
+            const progress = (currentQuestionIndex / shuffledQuestions.length) * 100;
+            progressBar.style.width = `${progress}%`;
         }
 
         // Funkcja wyświetlająca pytanie
@@ -452,11 +543,12 @@
             endTestButton.classList.remove('hidden');
             nextButton.classList.add('hidden');
             restartButton.classList.add('hidden');
-            retakeIncorrectButton.classList.add('hidden'); // Ukryj nowy przycisk na początku pytania
+            retakeIncorrectButton.classList.add('hidden');
             finalScoreElement.classList.add('hidden');
             incorrectAnswersSummary.classList.add('hidden');
             incorrectAnswersSummary.querySelector('ul').innerHTML = '';
             answerInput.classList.remove('input-correct-glow');
+            resultsHistory.classList.add('hidden'); // Ukryj historię wyników
 
             isTransitioning = false; // Zresetuj flagę przejścia, aplikacja gotowa na nową interakcję
 
@@ -467,6 +559,7 @@
                 answerInput.value = '';
                 answerInput.disabled = false;
                 answerInput.focus();
+                updateProgressBar(); // Aktualizuj pasek postępu
             } else {
                 endTest();
             }
@@ -485,7 +578,7 @@
         // Funkcja do sprawdzania odpowiedzi
         function checkAnswer() {
             if (answerInput.disabled || isTransitioning) { 
-                return; // Nie rób nic, jeśli pole jest już wyłączone lub trwa przejście
+                return;
             }
 
             const userAnswerRaw = answerInput.value.trim();
@@ -497,7 +590,7 @@
                 return;
             }
 
-            isTransitioning = true; // Ustaw flagę na true po rozpoczęciu sprawdzania
+            isTransitioning = true;
 
             const currentQuestion = shuffledQuestions[currentQuestionIndex];
             const userAnswerProcessed = normalizeAnswer(userAnswerRaw);
@@ -529,7 +622,6 @@
                 answerInput.classList.remove('input-correct-glow');
             }
 
-            // Przechowujemy cały obiekt pytania, aby móc go powtórzyć
             attemptedResults.push({
                 originalQuestion: currentQuestion, 
                 userAnswer: userAnswerRaw,
@@ -569,15 +661,57 @@
         let nextButtonTimeoutId = null;
         function nextQuestion() {
             if (nextButtonTimeoutId) {
-                clearTimeout(nextButtonTimeoutId); // Usuń poprzedni timeout, jeśli istnieje
+                clearTimeout(nextButtonTimeoutId);
             }
-            // Ustaw debouncing na 50ms, aby zapobiec podwójnym kliknięciom/enterom
             nextButtonTimeoutId = setTimeout(() => {
                 currentQuestionIndex++;
                 displayQuestion();
-                nextButtonTimeoutId = null; // Zresetuj timeout ID
+                nextButtonTimeoutId = null;
             }, 50); 
         }
+
+        // Funkcje do zarządzania historią wyników w Local Storage
+        function saveResultToHistory(score, totalQuestions, type) {
+            let history = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]');
+            const now = new Date();
+            const dateString = now.toLocaleDateString('pl-PL', {
+                year: 'numeric', month: 'numeric', day: 'numeric',
+                hour: '2-digit', minute: '2-digit'
+            });
+            history.push({
+                score: score,
+                total: totalQuestions,
+                type: type, // 'pełny' lub 'błędne'
+                date: dateString
+            });
+            // Ogranicz liczbę wyników do np. 10 ostatnich
+            if (history.length > 10) {
+                history = history.slice(history.length - 10);
+            }
+            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(history));
+            displayResultsHistory(); // Odśwież wyświetlanie historii
+        }
+
+        function displayResultsHistory() {
+            const history = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]');
+            historyList.innerHTML = '';
+            if (history.length === 0) {
+                historyList.innerHTML = '<li>Brak zapisanych wyników.</li>';
+                resultsHistory.classList.remove('hidden');
+                return;
+            }
+
+            history.reverse().forEach(entry => { // Wyświetlaj najnowsze na górze
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `
+                    <span class="score-text">Wynik: ${entry.score} / ${entry.total} (${entry.type})</span>
+                    <span class="date-text">${entry.date}</span>
+                `;
+                historyList.appendChild(listItem);
+            });
+            resultsHistory.classList.remove('hidden');
+        }
+
 
         // Funkcja: Zakończenie testu
         function endTest() {
@@ -585,6 +719,10 @@
             sentenceElement.textContent = 'Test zakończony!';
             finalScoreElement.textContent = `Twój wynik: ${score} / ${shuffledQuestions.length}`;
             finalScoreElement.classList.remove('hidden');
+
+            // Określ typ testu do zapisu w historii
+            const testType = (shuffledQuestions.length === questions.length) ? 'pełny' : 'błędne';
+            saveResultToHistory(score, shuffledQuestions.length, testType); // Zapisz wynik
 
             answerInput.classList.add('hidden');
             answerInput.disabled = true;
@@ -594,6 +732,7 @@
             nextButton.classList.add('hidden');
             feedbackElement.classList.add('hidden');
             feedbackElement.classList.remove('feedback-correct', 'feedback-incorrect', 'feedback-warning');
+            progressBarContainer.classList.add('hidden'); // Ukryj pasek postępu
 
             answerInput.classList.remove('input-correct-glow');
 
@@ -605,13 +744,12 @@
                 if (!result.isCorrect) {
                     hasIncorrectAnswers = true;
                     const listItem = document.createElement('li');
-                    // Używamy originalQuestion.sentence_template do rekonstrukcji zdania
                     const filledSentence = result.originalQuestion.sentence_template.replace(
                         '___',
                         `<span class="your-answer">${result.userAnswer || '[brak odpowiedzi]'}</span>`
                     );
                     listItem.innerHTML = `
-                        <p class="original-sentence">Pytanie ${result.questionNumber}: ${filledSentence}</p>
+                        <p class="original-sentence">Pytanie ${result.originalQuestion.sentence_template.replace('___', '______')}</p>
                         <p>Twoja odpowiedź: <span class="your-answer">${result.userAnswer || '[brak]'}</span></p>
                         <p>Poprawna odpowiedź: <span class="correct-answer">${result.originalQuestion.correct_answer}</span></p>
                     `;
@@ -621,15 +759,15 @@
 
             if (hasIncorrectAnswers) {
                 incorrectAnswersSummary.classList.remove('hidden');
-                retakeIncorrectButton.classList.remove('hidden'); // Pokaż przycisk "Powtórz błędne"
+                retakeIncorrectButton.classList.remove('hidden');
             } else {
                 sentenceElement.textContent = 'Gratulacje! Odpowiedziałeś/aś poprawnie na wszystkie pytania.';
                 incorrectAnswersSummary.classList.add('hidden');
-                retakeIncorrectButton.classList.add('hidden'); // Ukryj przycisk, jeśli nie ma błędów
+                retakeIncorrectButton.classList.add('hidden');
             }
 
             restartButton.classList.remove('hidden');
-            restartButton.focus(); // Ustaw focus na przycisku restartu po zakończeniu
+            restartButton.focus();
         }
 
         // Nowa funkcja: Powtórz test tylko z błędnymi odpowiedziami
@@ -637,22 +775,22 @@
             score = 0;
             currentQuestionIndex = 0;
             
-            // Filtrujemy tylko te pytania, na które odpowiedziano błędnie
             const incorrectQuestions = attemptedResults
                 .filter(result => !result.isCorrect)
-                .map(result => result.originalQuestion); // Pobieramy oryginalne obiekty pytań
+                .map(result => result.originalQuestion);
 
-            // Resetujemy attemptedResults dla nowego pod-quizu
             attemptedResults = []; 
 
             if (incorrectQuestions.length > 0) {
-                shuffledQuestions = shuffleArray(incorrectQuestions); // Tasujemy tylko błędne pytania
+                shuffledQuestions = shuffleArray(incorrectQuestions);
+                progressBarContainer.classList.remove('hidden'); // Pokaż pasek postępu
                 displayQuestion();
             } else {
-                // To nie powinno się zdarzyć, jeśli przycisk jest pokazywany warunkowo
                 sentenceElement.textContent = 'Brak pytań do powtórzenia. Brawo!';
                 retakeIncorrectButton.classList.add('hidden');
                 restartButton.classList.remove('hidden');
+                progressBarContainer.classList.add('hidden'); // Ukryj pasek postępu
+                displayResultsHistory(); // Pokaż historię, jeśli nie ma pytań do powtórki
             }
         }
 
@@ -662,7 +800,8 @@
             score = 0;
             currentQuestionIndex = 0;
             attemptedResults = [];
-            shuffledQuestions = shuffleArray([...questions]); // Reset do wszystkich pytań
+            shuffledQuestions = shuffleArray([...questions]);
+            progressBarContainer.classList.remove('hidden'); // Pokaż pasek postępu
             displayQuestion();
         }
 
@@ -672,7 +811,7 @@
         endTestButton.addEventListener('click', endTest);
         nextButton.addEventListener('click', nextQuestion);
         restartButton.addEventListener('click', restartApp);
-        retakeIncorrectButton.addEventListener('click', retakeIncorrectAnswers); // Obsługa nowego przycisku
+        retakeIncorrectButton.addEventListener('click', retakeIncorrectAnswers);
 
         // Zmodyfikowana obsługa klawisza Enter
         document.addEventListener('keypress', (e) => {
@@ -681,17 +820,21 @@
                     checkAnswer();
                 } else if (!nextButton.classList.contains('hidden')) {
                     nextButton.click(); 
-                } else if (!retakeIncorrectButton.classList.contains('hidden')) { // Priorytet dla powtórki błędnych
+                } else if (!retakeIncorrectButton.classList.contains('hidden')) {
                     retakeIncorrectButton.click();
                 } else if (!restartButton.classList.contains('hidden')) {
                     restartButton.click();
                 }
-                e.preventDefault(); // Zapobiegnij domyślnej akcji Enter
+                e.preventDefault();
             }
         });
 
         // Inicjalizacja aplikacji - tasowanie pytań i wyświetlenie pierwszego
-        restartApp();
+        // Wywołaj displayResultsHistory na starcie, aby pokazać historię, jeśli użytkownik nie jest w trakcie quizu
+        restartApp(); // Rozpocznij quiz
+        // Jeśli chcesz, aby historia była widoczna od razu po załadowaniu strony, bez rozpoczynania quizu:
+        // Możesz wywołać displayResultsHistory() tutaj, a restartApp() przenieść do przycisku "Rozpocznij Quiz"
+        // Na potrzeby obecnej struktury, po prostu upewnij się, że historia jest widoczna po zakończeniu testu.
     </script>
 
 </body>
